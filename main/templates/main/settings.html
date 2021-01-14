@@ -18,8 +18,8 @@
                 <nav>
                     <ul class="menu">
                         <li><button onclick="window.location.href = 'home';" class="menu_item"><div class="menu_logo">F5</div> <div class="menu_link">главная</div></button></li>
-                        <li><button onclick="window.location.href = 'statistic';" class="menu_item"><div class="menu_icon"><img src="{% static 'icons/icon_statistics.svg' %}"></div><div class="menu_link">статисика</div></button></li>
-                        <li><button onclick="window.location.href = 'settings';" class="menu_item_active"><div class="menu_icon"><img src="{% static 'icons/icon_settings.svg' %}"></div><div class="menu_link">настройки</div></button></li>
+                        <li><button {% if request.user.is_authenticated %}onclick="window.location.href = 'statistic'";{% else %}onclick="window.location.href = 'login'";{% endif %} class="menu_item"><div class="menu_icon"><img src="{% static 'icons/icon_statistics.svg' %}"></div><div class="menu_link">статисика</div></button></li>
+                        <li><button {% if request.user.is_authenticated %}onclick="window.location.href = 'settings'";{% else %}onclick="window.location.href = 'login'";{% endif %}  class="menu_item_active"><div class="menu_icon"><img src="{% static 'icons/icon_settings.svg' %}"></div><div class="menu_link">настройки</div></button></li>
                     </ul>
                 </nav>
             </td>
@@ -56,8 +56,8 @@
                 <div class="row">
                     <ul class="menu col-md-10">
                         <li class="menu_item"><a href="home" class="menu_link">Главная</a></li>
-                        <li class="menu_item"><a href="statistic" class="menu_link">Статистика</a></li>
-                        <li class="menu_item_active"><a href="settings" class="menu_link">Настройки</a></li>
+                        <li class="menu_item">{% if request.user.is_authenticated %}<a href="statistic" class="menu_link">Статистика</a></li>{% else %}<a href="login" class="menu_link">Статистика</a>{% endif %}
+                        <li class="menu_item_active">{% if request.user.is_authenticated %}<a href="settings" class="menu_link">Настройки</a></li>{% else %}<a href="login" class="menu_link">Настройки</a></li>{% endif %}
                     </ul>
                 {% if request.user.is_authenticated %}
                 {% else %}
