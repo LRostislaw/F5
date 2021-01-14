@@ -1,0 +1,99 @@
+{% load static %}
+
+{% if request.user_agent.is_mobile %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_mobile.min.css' %}">
+</head>
+<body>
+    <table>
+        <tr>
+            <td>
+                <form method="POST">
+                     {% csrf_token %}
+                    <div class="auth">
+                        <label class="form-label form_label">логин</label>
+                        {{ form.username }}
+                    </div>
+                    <div class="auth">
+                        <label class="form-label form_label">пароль</label>
+                        {{ form.password1 }}
+                    </div>
+                    <div  class="auth">
+                        <label class="form-label form_label">пароль</label>
+                        {{ form.password2 }}
+                    </div>
+                    <button class="auth_btn" type="submit">Регистрация</button>
+                </form>
+                <a href="login" class="link_reg">Вход</a>
+            </td>
+            <td>
+        </tr>
+    </table>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+{% else %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+</head>
+<body>
+    <section class="auth">
+        <div class="container">
+            <div class="auth_block">
+                <h2 class="auth_title">Регистрация</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <label for="" class="form-label col-md-3 auth_form_label">логин</label>
+                        <div class="col-md-9">{{ form.username }}</div>
+                    </div>
+                    <div class="row">
+                        <label for="" class="form-label col-md-3 auth_form_label">пароль</label>
+                        <div class="col-md-9">{{ form.password1 }}</div>
+                    </div>
+                    <div class="row">
+                        <label for="" class="form-label col-md-3 auth_form_label">пароль</label>
+                        <div class="col-md-9">{{ form.password2 }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="form-check">
+                            <label class="form-check-label col-md-11 auth_checklabel" for="">Со всем согласен</label>
+                            <input class="form-check-input col-md-1 auth_checkbox" type="checkbox" value="" id="" aria-describedby="invalidCheck3Feedback" required>
+                        </div>
+                    </div>
+                        <button class="auth_btn" type="submit">Зарегистрироваться</button>
+                </form>
+            </div>
+            <a href="login" class="link_reg">Вход</a>
+        </div>
+    </section>
+    <footer>
+        <div class="info">
+            <div class="info_links">
+                <a href="#" class="underlined">Служба поддержки</a>
+                |
+                <a href="#" class="underlined">Политика конфиденциальности</a>
+            </div>
+            Позвоните нам <a href="tel:+88005550121">8-800-555-01-21</a>
+        </div>
+    </footer>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+{% endif %}

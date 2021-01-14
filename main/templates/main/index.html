@@ -1,0 +1,224 @@
+{% load static %}
+
+{% if request.user_agent.is_mobile %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>F5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style_mobile.min.css' %}">
+</head>
+<body>
+    <table>
+        <tr>
+            <td width="114px" valign="top">
+                <nav>
+                    <ul class="menu">
+                        <li><button onclick="window.location.href = 'home';" class="menu_item_active"><div class="menu_logo">F5</div> <div class="menu_link">главная</div></button></li>
+                        <li><button onclick="window.location.href = 'statistic';" class="menu_item"><div class="menu_icon"><img src="{% static 'icons/icon_statistics.svg' %}"></div><div class="menu_link">статисика</div></button></li>
+                        <li><button onclick="window.location.href = 'settings';" class="menu_item"><div class="menu_icon"><img src="{% static 'icons/icon_settings.svg' %}"></div><div class="menu_link">настройки</div></button></li>
+                    </ul>
+                </nav>
+            </td>
+            <td width="100%" valign="center">
+                {% if request.user.is_authenticated %}
+
+                {% else %}
+                    <button class="auth_btn col-md-2"><a href="login">Вход</a>/<a href="signup">Регистрация</a></button>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+{% else %}
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F5</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="container">
+                <div class="row">
+                    <ul class="menu col-md-10">
+                        <li class="menu_item_active"><a href="" class="menu_link">Главная</a></li>
+                        <li class="menu_item"><a href="statistic" class="menu_link">Статистика</a></li>
+                        <li class="menu_item"><a href="settings" class="menu_link">Настройки</a></li>
+                    </ul>
+                {% if request.user.is_authenticated %}
+                {% else %}
+                    <button class="auth_btn col-md-2"><a href="login">Вход</a>/<a href="signup">Регистрация</a></button>
+                {% endif %}
+              </div>
+            </div>
+        </nav>
+    </header>
+
+    <section class="promo">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7">
+                    <img class="promo_image" src="{% static 'images/promo_img.png' %}">
+                </div>
+                <div class="col-md-4">
+                    <h1 class="promo_header">Lorem ipsum</h1>
+                    <h2 class="promo_subheader">Lorem ipsum</h2>
+                    <div class="promo_descr">Lorem ipsum dolor sit amet, consectetur<br>
+                        adipiscing elit. Sed id tincidunt diam. Sed<br>
+                        ullamcorper nisl metus.</div>
+                    <button class="promo_btn">
+                      НАЧАТЬ!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="opportunities">
+        <div class="container">
+          <div class="label">Возможности</div>
+          <div class="title">Lorem ipsum</div>
+
+        </div>
+    </section>
+
+    <section class="download">
+        <div class="container">
+            <div class="label_w">Установить</div>
+            <div class="title_w">Lorem ipsum</div>
+            <div class="subtitle_w">Lorem ipsum</div>
+            <img src="{% static 'images/android.png' %}" alt="#" class="download_img">
+            <button class="download_btn">Скачать apk <img src="{% static 'icons/download.png' %}" alt="" class="download_icon"></button>
+        </div>
+    </section>
+
+    <section class="faq">
+        <div class="container">
+              <div class="label">FAQ</div>
+              <div class="title">Lorem ipsum</div>
+              <div class="subtitle">Lorem ipsum</div>
+              <div class="accordion" id="accordionFAQ">
+
+                <div class="card">
+                  <div class="card-header" id="headingOne">
+                    <button class="btn btn-link btn-block" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <div class="row"></div>
+                      lorem ipsum
+                      <img src="{% static 'icons/icon_plus.png' %}" alt="" class="plus">
+                    </button>
+                  </div>
+                  <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionFAQ">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt diam. Sed ullamcorper nisl metus. Morbi a fermentum erat, non venenatis risus. Suspendisse ut tempor leo, vitae dapibus nibh. Etiam vel leo fringilla, blandit enim a, hendrerit elit. Aenean sit amet posuere ligula. Donec in augue ornare, efficitur erat a, aliquam erat. In quis neque a erat hendrerit consequat. Integer non efficitur mauris. Maecenas consectetur est eget vehicula volutpat. Aliquam eu egestas arcu. Curabitur molestie felis turpis, a fermentum ipsum mollis non. Nunc dui mi, sagittis sit amet nulla nec, aliquam suscipit velit. Donec in pulvinar sem. Proin blandit ex sed erat eleifend, eget egestas nibh rhoncus.
+                    </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-header" id="headingTwo">
+                      <button class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        lorem ipsum
+                        <img src="{% static 'icons/icon_plus.png' %}" alt="" class="plus">
+                      </button>
+                  </div>
+                  <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionFAQ">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt diam. Sed ullamcorper nisl metus. Morbi a fermentum erat, non venenatis risus. Suspendisse ut tempor leo, vitae dapibus nibh. Etiam vel leo fringilla, blandit enim a, hendrerit elit. Aenean sit amet posuere ligula. Donec in augue ornare, efficitur erat a, aliquam erat. In quis neque a erat hendrerit consequat. Integer non efficitur mauris. Maecenas consectetur est eget vehicula volutpat. Aliquam eu egestas arcu. Curabitur molestie felis turpis, a fermentum ipsum mollis non. Nunc dui mi, sagittis sit amet nulla nec, aliquam suscipit velit. Donec in pulvinar sem. Proin blandit ex sed erat eleifend, eget egestas nibh rhoncus.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header" id="headingFour">
+                    <button class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="true" aria-controls="collapseFour">
+                      lorem ipsum
+                      <img src="{% static 'icons/icon_plus.png' %}" alt="" class="plus">
+                    </button>
+                  </div>
+                  <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordionFAQ">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt diam. Sed ullamcorper nisl metus. Morbi a fermentum erat, non venenatis risus. Suspendisse ut tempor leo, vitae dapibus nibh. Etiam vel leo fringilla, blandit enim a, hendrerit elit. Aenean sit amet posuere ligula. Donec in augue ornare, efficitur erat a, aliquam erat. In quis neque a erat hendrerit consequat. Integer non efficitur mauris. Maecenas consectetur est eget vehicula volutpat. Aliquam eu egestas arcu. Curabitur molestie felis turpis, a fermentum ipsum mollis non. Nunc dui mi, sagittis sit amet nulla nec, aliquam suscipit velit. Donec in pulvinar sem. Proin blandit ex sed erat eleifend, eget egestas nibh rhoncus.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header" id="headingFive">
+                    <button class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true" aria-controls="collapseFive">
+                      lorem ipsum
+                      <img src="{% static 'icons/icon_plus.png' %}" alt="" class="plus">
+                    </button>
+                  </div>
+                  <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordionFAQ">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt diam. Sed ullamcorper nisl metus. Morbi a fermentum erat, non venenatis risus. Suspendisse ut tempor leo, vitae dapibus nibh. Etiam vel leo fringilla, blandit enim a, hendrerit elit. Aenean sit amet posuere ligula. Donec in augue ornare, efficitur erat a, aliquam erat. In quis neque a erat hendrerit consequat. Integer non efficitur mauris. Maecenas consectetur est eget vehicula volutpat. Aliquam eu egestas arcu. Curabitur molestie felis turpis, a fermentum ipsum mollis non. Nunc dui mi, sagittis sit amet nulla nec, aliquam suscipit velit. Donec in pulvinar sem. Proin blandit ex sed erat eleifend, eget egestas nibh rhoncus.
+                    </div>
+                  </div>
+                </div>
+
+                <div class="card">
+                  <div class="card-header" id="headingThree">
+                      <button class="btn btn-link btn-block collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        lorem ipsum
+                        <img src="{% static 'icons/icon_plus.png' %}" alt="" class="plus">
+                      </button>
+                  </div>
+                  <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionFAQ">
+                    <div class="card-body">
+                      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt diam. Sed ullamcorper nisl metus. Morbi a fermentum erat, non venenatis risus. Suspendisse ut tempor leo, vitae dapibus nibh. Etiam vel leo fringilla, blandit enim a, hendrerit elit. Aenean sit amet posuere ligula. Donec in augue ornare, efficitur erat a, aliquam erat. In quis neque a erat hendrerit consequat. Integer non efficitur mauris. Maecenas consectetur est eget vehicula volutpat. Aliquam eu egestas arcu. Curabitur molestie felis turpis, a fermentum ipsum mollis non. Nunc dui mi, sagittis sit amet nulla nec, aliquam suscipit velit. Donec in pulvinar sem. Proin blandit ex sed erat eleifend, eget egestas nibh rhoncus.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="about_us">
+        <div class="container">
+            <div class="label_w">О нас</div>
+            <div class="title_w">Lorem ipsum</div>
+            <div class="subtitle_w">Lorem ipsum</div>
+            <div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed id tincidunt diam.
+                Sed ullamcorper nisl metus. Morbi a fermentum erat, non venenatis risus.
+                Suspendisse ut tempor leo, vitae dapibus nibh. Etiam vel leo fringilla, blandit enim a, hendrerit elit.
+                Aenean sit amet posuere ligula. Donec in augue ornare, efficitur erat a, aliquam erat.
+                In quis neque a erat hendrerit consequat. Integer non efficitur mauris.
+                Maecenas consectetur est eget vehicula volutpat. Aliquam eu egestas arcu.</div>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{% static 'images/about_us.png' %}" class="about_us_img" alt="">
+                </div>
+                <div class="col-md-6">
+                    <img src="{% static 'images/about_us.png' %}" class="about_us_img_r" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="info">
+            <div class="info_links">
+                <a href="#" class="underlined">Служба поддержки</a>
+                |
+                <a href="#" class="underlined">Политика конфиденциальности</a>
+            </div>
+            Позвоните нам <a href="tel:+88005550121">8-800-555-01-21</a>
+        </div>
+    </footer>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+</body>
+</html>
+{% endif %}
