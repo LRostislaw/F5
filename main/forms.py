@@ -5,7 +5,7 @@ from django.forms import ModelForm, TextInput, CharField
 class ADForm(ModelForm):
     class Meta:
         model = AD
-        fields = ['systolic_ad', 'diastolic_ad']
+        fields = ['systolic_ad', 'diastolic_ad', 'time']
 
         widgets = {
             'systolic_ad': TextInput(attrs={
@@ -17,5 +17,9 @@ class ADForm(ModelForm):
                 'class': 'form-control save_form',
                 'type': 'number',
                 'placeholder': 'Диастолическое давление',
-            })
+            }),
+            'time': TextInput(attrs={
+                'class': 'form-control save_form',
+                'type': 'date',
+            }),
         }
