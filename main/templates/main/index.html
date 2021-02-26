@@ -47,19 +47,8 @@
             <table>
                 <tr>
                     <td>
-                        <form method="POST">
-                            {% csrf_token %}
-                            <div class="auth">
-                                <label class="form-label form_label">логин</label>
-                                {{ form.username }}
-                            </div>
-                            <div class="auth">
-                                <label class="form-label form_label">пароль</label>
-                                {{ form.password }}
-                            </div>
-                            <button class="auth_btn" type="submit">Вход</button>
-                        </form>
-                        <a href="signup" class="link_reg">Регистрация</a>
+                        <button class="save_btn" onclick="window.location.href = 'login';">Вход</button>
+                        <button class="save_btn" onclick="window.location.href = 'signup';">Регистрация</button>
                     </td>
                 </tr>
             </table>
@@ -86,8 +75,8 @@
                 <div class="row">
                     <ul class="menu col-md-12">
                         <li class="menu_item_active"><a href="home" class="menu_link">Главная</a></li>
-                        <li class="menu_item">{% if request.user.is_authenticated %}<a href="statistic" class="menu_link">Статистика</a></li>{% else %}<a href="login" class="menu_link">Статистика</a>{% endif %}
-                        <li class="menu_item">{% if request.user.is_authenticated %}<a href="settings" class="menu_link">Настройки</a></li>{% else %}<a href="login" class="menu_link">Настройки</a></li>{% endif %}
+                        {% if request.user.is_authenticated %}<li class="menu_item"><a href="statistic" class="menu_link">Статистика</a></li>{% else %}{% endif %}
+                        {% if request.user.is_authenticated %}<li class="menu_item"><a href="settings" class="menu_link">Настройки</a></li>{% else %}{% endif %}
                     </ul>
               </div>
             </div>
@@ -97,16 +86,14 @@
     <section class="promo">
         <div class="container">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-5">
                     <img class="promo_image" src="{% static 'images/promo_img.png' %}">
                 </div>
-                <div class="col-md-4">
-                    <h1 class="promo_header">Lorem ipsum</h1>
-                    <h2 class="promo_subheader">Lorem ipsum</h2>
-                    <div class="promo_descr">Lorem ipsum dolor sit amet, consectetur<br>
-                        adipiscing elit. Sed id tincidunt diam. Sed<br>
-                        ullamcorper nisl metus.</div>
-                    <button class="promo_btn">
+                <div class="col-md-7">
+                    <h1 class="promo_header">система F5</h1>
+                    <h2 class="promo_subheader">для отслеживания <br>изменений в организме</h2>
+                    <div class="promo_descr">F5 позволяет надёжно хранить Ваши медецинские данные. <br>Умные алгоритмы анилизируют сохраняемые показатели <br>и строят наглядную статистику. <br><br>Сохраняйте свои медецинские данные <br>безопасно, быстро и удобно!</div>
+                    {% if request.user.is_authenticated %}<button class="promo_btn" onclick="window.location.href = 'statistic';">{% else %}<button class="promo_btn" onclick="window.location.href = 'login';">{% endif %}
                       НАЧАТЬ!
                     </button>
                 </div>
@@ -125,18 +112,18 @@
     <section class="download">
         <div class="container">
             <div class="label_w">Установить</div>
-            <div class="title_w">Lorem ipsum</div>
-            <div class="subtitle_w">Lorem ipsum</div>
+            <div class="title_w">Мобильное приложение</div>
+            <div class="subtitle_w">Для Android</div>
             <img src="{% static 'images/android.png' %}" alt="#" class="download_img">
-            <a type="download" href="{% static 'download/F5.apk' %}" style="text-decoration: none;"><button class="download_btn">Скачать apk<img src="{% static 'icons/download.png' %}" alt="" class="download_icon"></button></a>
+            <a href="{% static 'download/F5.apk' %}" style="text-decoration: none;" download><button class="download_btn">Скачать apk<img src="{% static 'icons/download.png' %}" alt="" class="download_icon"></button></a>
         </div>
     </section>
 
     <section class="faq">
         <div class="container">
               <div class="label">FAQ</div>
-              <div class="title">Lorem ipsum</div>
-              <div class="subtitle">Lorem ipsum</div>
+              <div class="title">Часто задаваемые вопросы</div>
+              <div class="subtitle">Возникли вопросы? Сперва ознакомьтесь с ответами на самые часто задоваемые вопросы.</div>
               <div class="accordion" id="accordionFAQ">
 
                 <div class="card">
@@ -241,9 +228,9 @@
             <div class="info_links">
                 <a href="#" class="underlined">Служба поддержки</a>
                 |
-                <a href="#" class="underlined">Политика конфиденциальности</a>
+                <a href="privacy" class="underlined">Политика конфиденциальности</a>
             </div>
-            Позвоните нам <a href="tel:+88005550121">8-800-555-01-21</a>
+            Пишите нам <a href="mailto:lishuk.rostislaw@yandex.ru">lishuk.rostislaw@yandex.ru</a>
         </div>
     </footer>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>

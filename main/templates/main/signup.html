@@ -30,7 +30,7 @@
                         <label class="form-label form_label">пароль</label>
                         {{ form.password2 }}
                     </div>
-                    <button class="auth_btn" type="submit">Регистрация</button>
+                    <button class="save_btn" type="submit">Регистрация</button>
                 </form>
                 <a href="login" class="link_reg">Вход</a>
             </td>
@@ -61,15 +61,15 @@
                     {% csrf_token %}
                     <div class="row">
                         <label for="" class="form-label col-md-3 auth_form_label">логин</label>
-                        <div class="col-md-9">{{ form.username }}</div>
+                        <div class="col-md-9 auth_form_form">{{ form.username }}</div>
                     </div>
                     <div class="row">
                         <label for="" class="form-label col-md-3 auth_form_label">пароль</label>
-                        <div class="col-md-9">{{ form.password1 }}</div>
+                        <div class="col-md-9 auth_form_form">{{ form.password1 }}</div>
                     </div>
                     <div class="row">
                         <label for="" class="form-label col-md-3 auth_form_label">пароль</label>
-                        <div class="col-md-9">{{ form.password2 }}</div>
+                        <div class="col-md-9 auth_form_form">{{ form.password2 }}</div>
                     </div>
                     <div class="row">
                         <div class="form-check">
@@ -77,7 +77,7 @@
                             <input class="form-check-input col-md-1 auth_checkbox" type="checkbox" value="" id="" aria-describedby="invalidCheck3Feedback" required>
                         </div>
                     </div>
-                        <button class="auth_btn" type="submit">Зарегистрироваться</button>
+                        <button class="save_btn" type="submit">Зарегистрироваться</button>
                 </form>
             </div>
             <a href="login" class="link_reg">Вход</a>
@@ -88,9 +88,9 @@
             <div class="info_links">
                 <a href="#" class="underlined">Служба поддержки</a>
                 |
-                <a href="#" class="underlined">Политика конфиденциальности</a>
+                <a href="privacy" class="underlined">Политика конфиденциальности</a>
             </div>
-            Позвоните нам <a href="tel:+88005550121">8-800-555-01-21</a>
+            Пишите нам <a href="mailto:lishuk.rostislaw@yandex.ru">lishuk.rostislaw@yandex.ru</a>
         </div>
     </footer>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>

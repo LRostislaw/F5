@@ -12,6 +12,7 @@ urlpatterns += [
     path('logout', views.LogoutView.as_view(), name='login'),
     path('edit_password', views.ChangeFormView.as_view(), name='edit_password'),
     path('statistic', views.statistic, name='statistic'),
-    path('settings', views.settings, name='settings'),
+    path('settings', views.Settings.as_view(), name='settings'),
     path('home', views.index, name='home'),
+    path('privacy', views.privacy, name='privacy'),
 ]

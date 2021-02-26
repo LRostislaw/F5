@@ -1,4 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import AuthenticationForm
@@ -7,10 +10,11 @@ from django.http import HttpResponseRedirect
 from django.views.generic.base import View
 from django.contrib.auth import logout
 from django.views.generic import UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import redirect
-from .forms import ADForm
-from .models import AD
+from .forms import ADForm, TypeForm, ChangeUserInfoForm
+from .models import AD, TypeData
 
 
 class RegisterFormView(FormView):
@@ -60,21 +64,53 @@ def index(request):
 
 def statistic(request):
     if request.method == 'POST':
-        form = ADForm(request.POST)
-        if form.is_valid():
-            listener = form.save(commit=False)
-            listener.user = request.user
-            listener.save()
-            return redirect('/statistic')
-    form = ADForm()
+        if 'add_data' in request.POST:
+            form = ADForm(request.POST)
+            if form.is_valid():
+                listener = form.save(commit=False)
+                listener.user = request.user
+                listener.type = TypeData.objects.get(id=request.POST.get("add_data"))
+                listener.save()
+                return redirect('/statistic')
+        if 'add_type' in request.POST:
+            form = TypeForm(request.POST)
+            if form.is_valid():
+                listener = form.save(commit=False)
+                listener.user = request.user
+                listener.label = dict(form.choices)[form.cleaned_data["label"]]
+                listener.save()
+                return redirect('/statistic')
+
+    FormAD = ADForm()
     user_name = request.user
-    statistics = AD.objects.order_by('time').filter(user=user_name)[:20]
+    types = TypeData.objects.order_by('-id').filter(user=user_name)
+    FormType = TypeForm()
+    statistics = AD.objects.order_by('time').filter(user=user_name)
     data = {
-        'form': form,
-        'statistics': statistics
+        'FormAD': FormAD,
+        'FormType': FormType,
+        'statistics': statistics,
+        'type': types
     }
     return render(request, 'main/statistic.html', data)
 
 
-def settings(request):
-    return render(request, 'main/settings.html')
+class Settings(SuccessMessageMixin, LoginRequiredMixin, UpdateView):
+    model = User
+    template_name = 'main/settings.html'
+    form_class = ChangeUserInfoForm
+    success_url = reverse_lazy('settings')
+    success_message = 'Изменения сохранены'
+
+    def dispatch(self, request, *args, **kwargs):
+        self.user_id = request.user.pk
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_object(self, queryset=None):
+        if not queryset:
+            queryset = self.get_queryset()
+        return get_object_or_404(queryset, pk=self.user_id)
+
+
+def privacy(request):
+    return render(request, 'main/privacy.html')
