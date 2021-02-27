@@ -8,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
-from django.contrib.auth import logout
+from django.contrib.auth import logout, authenticate
 from django.views.generic import UpdateView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.forms import PasswordChangeForm
@@ -19,7 +19,7 @@ from .models import AD, TypeData
 
 class RegisterFormView(FormView):
     form_class = UserCreationForm
-    success_url = "/"
+    success_url = "/login"
     template_name = "main/signup.html"
 
     def form_valid(self, form):

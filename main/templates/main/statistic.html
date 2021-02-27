@@ -37,9 +37,13 @@
                         </div>
                     </div>
                     <ul class="types">
+                    {% if type %}
                         {% for i in type %}
                         <li class="accordion-header" id="header{{ i.id }}"><button class="type" type="button" data-toggle="collapse" data-target="#Info{{ i.id }}" aria-expanded="true" aria-controls="Info{{ i.id }}">{{ i.label }}</button></li>
                         {% endfor %}
+                    {% else %}
+                        <div class="types save" style="margin: 0 auto; margin-top:5px; color: #cccccc; font-size: 1rem; font-weight: 400; line-height: 1.5;">Вы ещё не начали<br>вести статистику</div>
+                    {% endif %}
                     </ul>
                 </td>
                 <td style="padding: 0;">
@@ -201,11 +205,15 @@
                             </div>
                         </div>
                         <ul class="types save">
+                        {% if type %}
                             {% for i in type %}
                             <div class="accordion-header" id="header{{ i.id }}">
                                 <li><button class="type clickable" type="button" data-toggle="collapse" data-target="#ad{{ i.id }}" aria-expanded="true" aria-controls="ad{{ i.id }}">{{ i.label }}</button></li>
                             </div>
                             {% endfor %}
+                        {% else %}
+                            <div style="margin: 0 auto; color: #cccccc; font-size: 1rem; font-weight: 400; line-height: 1.5;">Вы ещё не начали<br>вести статистику</div>
+                        {% endif %}
                         </ul>
                         {% for i in type %}
                         <div class="collapse" id="ad{{ i.id }}" aria-labelledby="heading{{ i.id }}" data-parent="#AccordionAdd"  style="transition: none !important;">
