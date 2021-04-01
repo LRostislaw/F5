@@ -41,7 +41,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Авторизация</title>
+        <title>Привязка</title>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;900&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
@@ -51,27 +51,10 @@
         <section class="auth">
             <div class="container">
                 <div class="auth_block">
-                    <h2 class="auth_title">Вход</h2>
-                    <form method="post">
-                        {% csrf_token %}
-                        <div class="row">
-                            <label for="" class="form-label col-md-3 auth_form_label">логин</label>
-                            <div class="col-md-9 auth_form_form">{{ form.username }}</div>
-                        </div>
-                        <div class="row">
-                            <label for="" class="form-label col-md-3 auth_form_label">пароль</label>
-                            <div class="col-md-9 auth_form_form">{{ form.password }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="form-check">
-                                <label class="form-check-label col-md-11 auth_checklabel" for="">Со всем согласен</label>
-                                <input class="form-check-input col-md-1 auth_checkbox" type="checkbox" value="" id="" aria-describedby="invalidCheck3Feedback" required>
-                            </div>
-                        </div>
-                        <button class="save_btn" type="submit">Войти</button>
-                    </form>
+                    <h2 class="auth_title">Привязка к врачу выполнена</h2>
+                    <div class="auth_form_label">Привязка пользователя с таким именем к врачу прошла успешно</div>
+                    <button class="save_btn"  onclick="window.location.href = 'signup'" type="submit">Войти на сайт</button>
                 </div>
-                <a href="signup" class="link_reg">Регистрация</a>
             </div>
         </section>
         <footer>

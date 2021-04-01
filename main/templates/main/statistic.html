@@ -14,13 +14,15 @@
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     </head>
     <body>
+    {% if request.user.is_doctor %}
+    {% else %}
         <table>
             <tr class="accordion" id="AccordionAdd">
                 <td width="114px" valign="top">
                     <nav>
                         <ul class="menu">
                             <li><button onclick="window.location.href = 'home';" class="menu_item"><div class="menu_logo">F5</div> <div class="menu_link">главная</div></button></li>
-                            <li><button onclick="window.location.href = 'statistic'"; class="menu_item_active"><div class="menu_icon"><img src="{% static 'icons/icon_statistics.svg' %}"></div><div class="menu_link">статисика</div></button></li>
+                            <li><button onclick="window.location.href = 'statistic'"; class="menu_item_active"><div class="menu_icon"><img src="{% static 'icons/icon_statistics.svg' %}"></div><div class="menu_link">статистика</div></button></li>
                             <li><button onclick="window.location.href = 'settings'"; class="menu_item"><div class="menu_icon"><img src="{% static 'icons/icon_settings.svg' %}"></div><div class="menu_link">настройки</div></button></li>
                         </ul>
                     </nav>
@@ -108,7 +110,7 @@
                 </td>
             </tr>
         </table>
-
+        {% endif %}
         <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         {% if statistics %}
         <script>
@@ -190,6 +192,182 @@
             </nav>
         </header>
 
+        {% if request.user.is_doctor %}
+            <section class="main">
+            <table class="accordion" id="AccordionUser">
+                <tr class="accordion" id="AccordionAdd">
+                    <td>
+                        <div class="add"><button class="plus" type="button" data-toggle="collapse" data-target="#FormPatient" aria-expanded="false" aria-controls="FormPatient">+</button></div>
+                        <div class="types save collapse multi-collapse" id="FormPatient" style="margin-bottom:5px">
+                            <div class="card card-body">
+                                <form method="POST">
+                                    {% csrf_token %}
+                                    {{ FormPatient.email }}
+                                    <button type="submit" class="save_btn" name="add_patient">Добавить</button>
+                                </form>
+                            </div>
+                        </div>
+                        <ul class="types save">
+                        {% if patients %}
+                            {% for i in patients %}
+                            <div class="accordion-header" id="user_header{{ i.id }}">
+                                <li><button class="type clickable" type="button" data-toggle="collapse" data-target="#user{{ i.id }}" aria-expanded="true" aria-controls="user{{ i.id }}">{{ i.username }}</button></li>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <div style="margin: 0 auto; color: #cccccc; font-size: 1rem; font-weight: 400; line-height: 1.5;">Вы ещё не добавили<br>ни одного пациента</div>
+                        {% endif %}
+                        </ul>
+                        {% for i in patients %}
+                         <div class="collapse" id="user{{ i.id }}" aria-labelledby="user_header{{ i.id }}" data-parent="#AccordionUser"  style="transition: none !important;">
+                             <div class="card-body">
+                                 <div class="add"><button class="plus" type="button" data-toggle="collapse" data-target="#FormType" aria-expanded="false" aria-controls="FormType">+</button></div>
+                                 <div class="types save collapse multi-collapse" id="FormType" style="margin-bottom:5px">
+                                     <div class="card card-body">
+                                         <form method="POST">
+                                            {% csrf_token %}
+                                            {{ FormType.label }}
+                                            <button type="submit" class="save_btn" name="add_type" value="{{ i.id }}">Добавить</button>
+                                         </form>
+                                     </div>
+                                 </div>
+                                 <ul class="types save">
+                                     {% if type %}
+                                     {% for i in type %}
+                                         {% if i.type.puser == i.patient %}
+                                             <div class="accordion-header" id="header{{ i.id }}">
+                                                 <li><button class="type clickable" type="button" data-toggle="collapse" data-target="#ad{{ i.id }}" aria-expanded="true" aria-controls="ad{{ i.id }}">{{ i.label }}</button></li>
+                                             </div>
+                                         {% endif %}
+                                     {% endfor %}
+                                 {% else %}
+                                     <div style="margin: 0 auto; color: #cccccc; font-size: 1rem; font-weight: 400; line-height: 1.5;">Пациент ещё не начал<br>вести статистику</div>
+                                 {% endif %}
+                                 </ul>
+                                 {% for i in type %}
+                                    {% if i.type.puser == i.patient %}
+                                     <div class="collapse" id="ad{{ i.id }}" aria-labelledby="heading{{ i.id }}" data-parent="#AccordionAdd"  style="transition: none !important;">
+                                         <div class="card-body">
+                                             <div class="add"><button class="plus" type="button" data-toggle="collapse" data-target="#FormAd" aria-expanded="false" aria-controls="FormAd">+</button></div>
+                                             <div class="types save collapse show" id="FormAd">
+                                                 <div class="card card-body">
+                                                     <form method="POST">
+                                                         {% csrf_token %}
+                                                         {{ FormAD.systolic_ad }}
+                                                         {{ FormAD.diastolic_ad }}
+                                                         {{ FormAD.time }}
+                                                         <button type="submit" class="save_btn" name="add_data" value="{{ i.id }}">Сохранить</button>
+                                                     </form>
+                                                 </div>
+                                             </div>
+                                         </div>
+                                     </div>
+                                 {% endif %}
+                                 {% endfor %}
+                                 </div>
+                             </div>
+                        {% endfor %}
+                        </td>
+                        {% for i in patients %}
+                             <td width="100%"  id="width">
+                                 <div  class="collapse" id="user{{ i.id }}" aria-labelledby="user_header{{ i.id }}" data-parent="#AccordionUser"  style="transition: none !important;">
+                                     <div class="card-body">
+                                         {% for i in type %}
+                                             {% if i.type.puser == i.patient %}
+                                                 <div class="collapse" id="ad{{ i.id }}" aria-labelledby="heading{{ i.id }}" data-parent="#AccordionAdd"  style="transition: none !important;">
+                                                     <div class="card-body">
+                                                         <div class="graphik save">
+                                                             <div class="line-graph{{ i.id }}"></div>
+                                                         </div>
+                                                         <div class="row" style="width:80%; margin: 0 auto; ">
+                                                             <div class="col-md-6" style="margin-top: 10px;padding: 0 5px 0 0;">
+                                                                 <div class="save">
+                                                                     <div class="bar-graph{{ i.id }}"></div>
+                                                                 </div>
+                                                             </div>
+                                                             <div class="col-md-6" style="margin-top: 10px; padding: 0 0 0 5px;">
+                                                                 <div class="save">
+                                                                     <div class="donut-graph{{ i.id }}"></div>
+                                                                 </div>
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             {% endif %}
+                                         {% endfor %}
+                                     </div>
+                                 </div>
+                             </td>
+                        {% endfor %}
+                    </tr>
+                </table>
+            </section>
+            <footer>
+                <div class="info">
+                    <div class="info_links">
+                        <a href="#" class="underlined">Служба поддержки</a>
+                        |
+                        <a href="privacy" class="underlined">Политика конфиденциальности</a>
+                    </div>
+                    Пишите нам <a href="mailto:lishuk.rostislaw@yandex.ru">lishuk.rostislaw@yandex.ru</a>
+                </div>
+            </footer>
+            <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+            {% if statistics %}
+            <script>
+                var width = document.getElementById('width').offsetWidth*0.8
+                {% for i in type %}
+                var chart = new Chartist.Line('.line-graph{{ i.id }}', {
+                labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+                series: [
+                  [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
+                  [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+                ]
+                }, {
+                  showPoint: true,
+                  height: 300,
+                  width: width
+
+                });
+                chart.update()
+                {% endfor %}
+            </script>
+            <script>
+                var width = document.getElementById('width').offsetWidth*0.35
+                {% for i in type %}
+                var data = {
+                  labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+                  series: [
+                    [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
+                    [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+                ]
+                };
+                var options = {
+                  height: 200,
+                  width: width
+                };
+                Chartist.Bar('.bar-graph{{ i.id }}', data, options);
+                {% endfor %}
+            </script>
+            <script>
+                var width = document.getElementById('width').offsetWidth*0.35
+                {% for i in type %}
+                var data = {
+                  series: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %},  {% endfor %} 1]
+                };
+
+                var sum = function(a, b) { return a + b };
+
+                new Chartist.Pie('.donut-graph{{ i.id }}', data, {
+                  height: 200,
+                  width: width
+                });
+                {% endfor %}
+            </script>
+            {% endif %}
+            <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+        {% else %}
         <section class="main">
             <table>
                 <tr class="accordion" id="AccordionAdd">
@@ -236,7 +414,7 @@
                     </td>
                     <td width="100%" id="width">
                     {% for i in type %}
-                    <div class="collapse" id="ad{{ i.id }}" aria-labelledby="heading{{ i.id }}" data-parent="#AccordionAdd"  style="transition: none !important;>
+                    <div class="collapse" id="ad{{ i.id }}" aria-labelledby="heading{{ i.id }}" data-parent="#AccordionAdd"  style="transition: none !important;">
                         <div class="card-body">
                             <div class="graphik save">
                                 <div class="line-graph{{ i.id }}"></div>
@@ -271,9 +449,7 @@
                 Пишите нам <a href="mailto:lishuk.rostislaw@yandex.ru">lishuk.rostislaw@yandex.ru</a>
             </div>
         </footer>
-
         <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-
         {% if statistics %}
         <script>
             var width = document.getElementById('width').offsetWidth*0.8
@@ -327,6 +503,7 @@
         </script>
         {% endif %}
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        {% endif %}
     </body>
     </html>
     {% endif %}
