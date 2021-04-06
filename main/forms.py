@@ -25,6 +25,12 @@ class RegisterUserForm(forms.ModelForm):
             errors = {'password2': ValidationError('Пароли не совпадают', code='password_mismatch')}
             raise ValidationError(errors)
 
+    def clean_email(self):
+        email = self.cleaned_data['email'].strip()
+        if puser.objects.filter(email__iexact=email).exists():
+            raise ValidationError('...')
+        return email
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data["password1"])

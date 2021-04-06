@@ -25,7 +25,7 @@ SECRET_KEY = '&t0bu@*nmd1@1ip!q0)4p0bv08695ye-5g4vl0k9gp3*9kym+n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['lrostislaw.pythonanywhere.com']
 
 # Application definition
 
@@ -91,9 +91,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
@@ -135,8 +132,9 @@ SITE_ID = 1
 
 AUTH_USER_MODEL = 'main.puser'
 
-EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = '25'
 EMAIL_HOST_USER = 'lshuk.rostislav@gmail.com'
-EMAIL_HOST_PASSWORD = 'vfubz175'
+EMAIL_HOST_PASSWORD = 'vfubz175' #past the key or password app here
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True

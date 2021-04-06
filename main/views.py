@@ -32,8 +32,8 @@ def user_activate(request, sign):
 
 
 def choice_doctor(request, sign, email):
-    user = puser.objects.get(email=email)
-    doctor = puser.objects.get(username=sign)
+    user = get_object_or_404(puser, email=email)
+    doctor = get_object_or_404(puser, username=sign)
     if user.is_doctor:
         template = 'bad_signature_choice.html'
     else:
@@ -120,10 +120,11 @@ def statistic(request):
             if form.is_valid():
                 listener = form.save(commit=False)
                 if request.user.is_doctor:
-                    listener.user = puser.objects.get(id=int(request.POST.getlist('add_type')[0]))
+                    listener.user = puser.objects.get(id=int(request.POST.getlist('add_data')[0].split(',')[0]))
+                    listener.type = TypeData.objects.get(id=int(request.POST.getlist('add_data')[0].split(',')[1]))
                 else:
                     listener.user = request.user
-                listener.type = TypeData.objects.get(id=request.POST.get("add_data"))
+                    listener.type = TypeData.objects.get(id=int(request.POST.getlist('add_data')[0]))
                 listener.save()
                 return redirect('/statistic')
         if 'add_type' in request.POST:

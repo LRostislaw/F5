@@ -14,8 +14,6 @@
         <link rel="stylesheet" href="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
     </head>
     <body>
-    {% if request.user.is_doctor %}
-    {% else %}
         <table>
             <tr class="accordion" id="AccordionAdd">
                 <td width="114px" valign="top">
@@ -27,6 +25,9 @@
                         </ul>
                     </nav>
                 </td>
+                {% if request.user.is_doctor %}
+                <td width="100%" valign="top"><div class="">На эту страницу с аккаунта врача можно войти только с компъютера</div></td>
+                    {% else %}
                 <td width="30%" valign="top">
                     <div class="add"><button class="plus" type="button" data-toggle="collapse" data-target="#FormType" aria-expanded="false" aria-controls="FormType">+</button></div>
                     <div class="save collapse multi-collapse" id="FormType">
@@ -108,9 +109,9 @@
                     </td>
                     {% endfor %}
                 </td>
+                {% endif %}
             </tr>
         </table>
-        {% endif %}
         <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
         {% if statistics %}
         <script>
@@ -123,7 +124,7 @@
             ]
             }, {
               showPoint: true,
-              width: 300,
+              width: 325,
               height: 175
             });
             chart.update()
@@ -139,24 +140,41 @@
             ]
             };
             var options = {
-              width: 300,
+              width: 325,
               height: 175
             };
             Chartist.Bar('.bar-graph{{ i.id }}', data, options);
             {% endfor %}
         </script>
         <script>
-        {% for i in type %}
-            var data = {
-              series: [5, 3, 4]
-            };
+            {% for i in type %}
+                var height = document.getElementById('Info{{ i.id }}').offsetWidth*0.2
+                var Hypotonia =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad < 100 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var Normal =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 100 and t.systolic_ad < 129 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var HighNormal =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 129 and t.systolic_ad < 140 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var ModerateHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 140 and t.systolic_ad < 160 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var AverageHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 160 and t.systolic_ad < 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var HardHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var series = [Hypotonia.length , Normal.length , HighNormal.length , ModerateHypertension.length , AverageHypertension.length , HardHypertension.length];
+                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умеренная Гипертония', 'Сред Гипертония', 'Тяж Гипертония'];
 
-            var sum = function(a, b) { return a + b };
+                for (var i=0; i<6; i++){
+                    if (series[i] == 0){
+                        labels[i] = " ";
+                        console.log(labels[i] = " ");
+                    };
+                };
 
-            new Chartist.Pie('.donut-graph{{ i.id }}', data, {
-              width: 300,
-              height: 150
-            });
+                var data = {
+                  labels: labels,
+                  series: series,
+                };
+
+
+                new Chartist.Pie('.donut-graph{{ i.id }}', data, {
+                  height: 150,
+                  width: 300
+                });
             {% endfor %}
         </script>
         {% endif %}
@@ -233,10 +251,10 @@
                                  </div>
                                  <ul class="types save">
                                      {% if type %}
-                                     {% for i in type %}
-                                         {% if i.type.puser == i.patient %}
-                                             <div class="accordion-header" id="header{{ i.id }}">
-                                                 <li><button class="type clickable" type="button" data-toggle="collapse" data-target="#ad{{ i.id }}" aria-expanded="true" aria-controls="ad{{ i.id }}">{{ i.label }}</button></li>
+                                     {% for b in type %}
+                                         {% if b.user == i %}
+                                             <div class="accordion-header" id="header{{ b.id }}">
+                                                 <li><button class="type clickable" type="button" data-toggle="collapse" data-target="#ad{{ b.id }}" aria-expanded="true" aria-controls="ad{{ b.id }}">{{ b.label }}</button></li>
                                              </div>
                                          {% endif %}
                                      {% endfor %}
@@ -244,9 +262,9 @@
                                      <div style="margin: 0 auto; color: #cccccc; font-size: 1rem; font-weight: 400; line-height: 1.5;">Пациент ещё не начал<br>вести статистику</div>
                                  {% endif %}
                                  </ul>
-                                 {% for i in type %}
-                                    {% if i.type.puser == i.patient %}
-                                     <div class="collapse" id="ad{{ i.id }}" aria-labelledby="heading{{ i.id }}" data-parent="#AccordionAdd"  style="transition: none !important;">
+                                 {% for b in type %}
+                                    {% if b.user == i %}
+                                     <div class="collapse" id="ad{{ b.id }}" aria-labelledby="heading{{ b.id }}" data-parent="#AccordionAdd"  style="transition: none !important;">
                                          <div class="card-body">
                                              <div class="add"><button class="plus" type="button" data-toggle="collapse" data-target="#FormAd" aria-expanded="false" aria-controls="FormAd">+</button></div>
                                              <div class="types save collapse show" id="FormAd">
@@ -256,7 +274,7 @@
                                                          {{ FormAD.systolic_ad }}
                                                          {{ FormAD.diastolic_ad }}
                                                          {{ FormAD.time }}
-                                                         <button type="submit" class="save_btn" name="add_data" value="{{ i.id }}">Сохранить</button>
+                                                         <button type="submit" class="save_btn" name="add_data" value="{{ i.id }},{{ b.id }}">Сохранить</button>
                                                      </form>
                                                  </div>
                                              </div>
@@ -352,15 +370,31 @@
             <script>
                 var width = document.getElementById('width').offsetWidth*0.35
                 {% for i in type %}
-                var data = {
-                  series: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %},  {% endfor %} 1]
+                var Hypotonia =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad < 100 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var Normal =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 100 and t.systolic_ad < 129 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var HighNormal =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 129 and t.systolic_ad < 140 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var ModerateHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 140 and t.systolic_ad < 160 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var AverageHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 160 and t.systolic_ad < 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var HardHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var series = [Hypotonia.length , Normal.length , HighNormal.length , ModerateHypertension.length , AverageHypertension.length , HardHypertension.length];
+                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умеренная Гипертония', 'Сред Гипертония', 'Тяж Гипертония'];
+
+                for (var i=0; i<6; i++){
+                    if (series[i] == 0){
+                        labels[i] = " ";
+                        console.log(labels[i] = " ");
+                    };
                 };
 
-                var sum = function(a, b) { return a + b };
+                var data = {
+                  labels: labels,
+                  series: series,
+                };
+
 
                 new Chartist.Pie('.donut-graph{{ i.id }}', data, {
                   height: 200,
-                  width: width
+                  width: width,
                 });
                 {% endfor %}
             </script>
@@ -489,16 +523,32 @@
         <script>
             var width = document.getElementById('width').offsetWidth*0.35
             {% for i in type %}
-            var data = {
-              series: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %},  {% endfor %} 1]
-            };
+                var Hypotonia =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad < 100 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var Normal =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 100 and t.systolic_ad < 129 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var HighNormal =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 129 and t.systolic_ad < 140 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var ModerateHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 140 and t.systolic_ad < 160 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var AverageHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 160 and t.systolic_ad < 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var HardHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
+                var series = [Hypotonia.length , Normal.length , HighNormal.length , ModerateHypertension.length , AverageHypertension.length , HardHypertension.length];
+                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умеренная Гипертония', 'Сред Гипертония', 'Тяж Гипертония'];
 
-            var sum = function(a, b) { return a + b };
+                for (var i=0; i<6; i++){
+                    if (series[i] == 0){
+                        labels[i] = " ";
+                        console.log(labels[i] = " ");
+                    };
+                };
 
-            new Chartist.Pie('.donut-graph{{ i.id }}', data, {
-              height: 200,
-              width: width
-            });
+                var data = {
+                  labels: labels,
+                  series: series,
+                };
+
+
+                new Chartist.Pie('.donut-graph{{ i.id }}', data, {
+                  height: 200,
+                  width: width,
+                });
             {% endfor %}
         </script>
         {% endif %}
