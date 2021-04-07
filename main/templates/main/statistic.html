@@ -117,10 +117,10 @@
         <script>
         {% for i in type %}
             var chart = new Chartist.Line('.line-graph{{ i.id }}', {
-            labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+            labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}', {% endif %}{% endfor %}],
             series: [
-              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
-              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }},{% endif %}{% endfor %}],
+              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }},{% endif %}{% endfor %}],
             ]
             }, {
               showPoint: true,
@@ -135,8 +135,8 @@
             var data = {
             labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
             series: [
-              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
-              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }},{% endif %}{% endfor %}],
+              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }},{% endif %}{% endfor %}],
             ]
             };
             var options = {
@@ -156,7 +156,7 @@
                 var AverageHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 160 and t.systolic_ad < 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
                 var HardHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
                 var series = [Hypotonia.length , Normal.length , HighNormal.length , ModerateHypertension.length , AverageHypertension.length , HardHypertension.length];
-                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умеренная Гипертония', 'Сред Гипертония', 'Тяж Гипертония'];
+                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умерен Гип', 'Сред Гип', 'Тяж Гип'];
 
                 for (var i=0; i<6; i++){
                     if (series[i] == 0){
@@ -336,10 +336,10 @@
                 var width = document.getElementById('width').offsetWidth*0.8
                 {% for i in type %}
                 var chart = new Chartist.Line('.line-graph{{ i.id }}', {
-                labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+                labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}', {% endif %}{% endfor %}],
                 series: [
-                  [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
-                  [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+                  [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }}, {% endif %}{% endfor %}],
+                  [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }}, {% endif %}{% endfor %}],
                 ]
                 }, {
                   showPoint: true,
@@ -354,10 +354,10 @@
                 var width = document.getElementById('width').offsetWidth*0.35
                 {% for i in type %}
                 var data = {
-                  labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+                  labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}', {% endif %}{% endfor %}],
                   series: [
-                    [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
-                    [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+                    [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }}, {% endif %}{% endfor %}],
+                    [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }}, {% endif %}{% endfor %}],
                 ]
                 };
                 var options = {
@@ -377,7 +377,7 @@
                 var AverageHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 160 and t.systolic_ad < 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
                 var HardHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
                 var series = [Hypotonia.length , Normal.length , HighNormal.length , ModerateHypertension.length , AverageHypertension.length , HardHypertension.length];
-                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умеренная Гипертония', 'Сред Гипертония', 'Тяж Гипертония'];
+                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умерен Гип', 'Сред Гип', 'Тяж Гип'];
 
                 for (var i=0; i<6; i++){
                     if (series[i] == 0){
@@ -489,10 +489,10 @@
             var width = document.getElementById('width').offsetWidth*0.8
             {% for i in type %}
             var chart = new Chartist.Line('.line-graph{{ i.id }}', {
-            labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+            labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}',{% endif %}{% endfor %}],
             series: [
-              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
-              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }},{% endif %}{% endfor %}],
+              [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }},{% endif %}{% endfor %}],
             ]
             }, {
               showPoint: true,
@@ -507,10 +507,10 @@
             var width = document.getElementById('width').offsetWidth*0.35
             {% for i in type %}
             var data = {
-              labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}' {% endif %}, {% endfor %}],
+              labels: [{% for t in statistics %} {% if t.type.id == i.id %} '{{ t.time|date:"j" }}',{% endif %}{% endfor %}],
               series: [
-                [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }} {% endif %}, {% endfor %}],
-                [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }} {% endif %}, {% endfor %}],
+                [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.systolic_ad }},{% endif %}{% endfor %}],
+                [{% for ad in statistics %} {% if ad.type.id == i.id %} {{ ad.diastolic_ad }},{% endif %}{% endfor %}],
             ]
             };
             var options = {
@@ -530,7 +530,7 @@
                 var AverageHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 160 and t.systolic_ad < 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
                 var HardHypertension =[{% for t in statistics %}{% if t.type.id == i.id and t.systolic_ad >= 180 %}{{ t.systolic_ad }},{% endif %}{% endfor %}];
                 var series = [Hypotonia.length , Normal.length , HighNormal.length , ModerateHypertension.length , AverageHypertension.length , HardHypertension.length];
-                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умеренная Гипертония', 'Сред Гипертония', 'Тяж Гипертония'];
+                var labels = ['Гипотония', 'Норма', 'Повышено', 'Умерен Гип', 'Сред Гип', 'Тяж Гип'];
 
                 for (var i=0; i<6; i++){
                     if (series[i] == 0){

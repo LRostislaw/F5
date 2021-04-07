@@ -19,7 +19,7 @@
                 <form method="POST">
                      {% csrf_token %}
                     <div class="auth">
-                        <label class="form-label form_label">хто</label>
+                        <label class="form-label form_label">тип аккаунта</label>
                         {{ form.is_doctor }}
                     </div>
                     <div class="auth">
@@ -68,7 +68,7 @@
                 <form method="post">
                     {% csrf_token %}
                     <div class="row">
-                        <label class="form-label col-md-3 auth_form_label">Хто</label>
+                        <label class="form-label col-md-3 auth_form_label">Тип Аккаунта</label>
                         <div class="col-md-9 auth_form_form">{{ form.is_doctor }}</div>
                     </div>
                     <div class="row">
